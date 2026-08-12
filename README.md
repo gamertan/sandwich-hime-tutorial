@@ -58,6 +58,17 @@ application resolves the published Apache-2.0 runtime rather than a neighboring
 development checkout. The verification scripts also reject any compiler or
 runtime version other than `v1.0.0-beta.1`.
 
+If an earlier compiler-first attempt reports that the parent module does not
+contain `gamertan.com/sandwich-hime/sando`, repair only that module selection:
+
+```sh
+GOWORK=off go mod download gamertan.com/sandwich-hime/sando@v1.0.0-beta.1
+GOWORK=off go get gamertan.com/sandwich-hime/sando@v1.0.0-beta.1
+```
+
+Then run the verifier again. You do not need to clear your whole Go module
+cache.
+
 Beta 1 is intended for classrooms, learning, prototypes, and evaluation. Its
 interfaces may still change before final v1. Linux and Windows have been
 maintainer-tested; macOS is provisional while native maintainer testing is
