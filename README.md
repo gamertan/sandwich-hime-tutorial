@@ -25,34 +25,43 @@ The starter demonstrates the boundary plainly:
   time through `Server-Timing`.
 - Production imports the Apache-2.0 `sando` runtime, not the compiler.
 
-## Run the current source preview
+## Walk the path with Beta 1
 
-Sandwich Hime does not have immutable public release tags yet. Do not invent a
-version-shaped install command: clone the compiler and this starter side by
-side, then use a local Go workspace as an explicit preview bridge.
+Install Go 1.25 or newer, then resolve the tiny runtime before installing the
+immutable classroom compiler:
 
 ```sh
-mkdir sandwich-hime-walk
-cd sandwich-hime-walk
-
-git clone https://gitea.speelman.ca/gamertan/sandwich-hime.git
 git clone https://gitea.speelman.ca/gamertan/sandwich-hime-tutorial.git
-
-cd sandwich-hime
-go install ./cmd/himesan
-
-cd ../sandwich-hime-tutorial
-go work init .
-go work edit -replace=gamertan.com/sandwich-hime/sando=../sandwich-hime/sando
-
+cd sandwich-hime-tutorial
+GOWORK=off go mod download gamertan.com/sandwich-hime/sando@v1.0.0-beta.1
+go install gamertan.com/sandwich-hime/cmd/himesan@v1.0.0-beta.1
 ./scripts/verify.sh
+GOWORK=off go run ./cmd/site
+```
+
+On Windows PowerShell, use the native verifier:
+
+```powershell
+git clone https://gitea.speelman.ca/gamertan/sandwich-hime-tutorial.git
+Set-Location sandwich-hime-tutorial
+$env:GOWORK = "off"
+go mod download gamertan.com/sandwich-hime/sando@v1.0.0-beta.1
+go install gamertan.com/sandwich-hime/cmd/himesan@v1.0.0-beta.1
+.\scripts\verify.ps1
 go run ./cmd/site
 ```
 
-Make sure `$(go env GOPATH)/bin` is on `PATH`, or set `HIMESAN_BIN` to the
-compiler executable when running the verification script. `go.work` and
-`go.work.sum` are intentionally ignored: they are local preview wiring, not a
-claim that `v0.0.0` was published.
+Make sure Go's install directory—normally `$(go env GOPATH)/bin`—is on
+`PATH`, or set `HIMESAN_BIN` to the full compiler path before running either
+verifier. The starter deliberately runs with `GOWORK=off`: it proves the
+application resolves the published Apache-2.0 runtime rather than a neighboring
+development checkout. The verification scripts also reject any compiler or
+runtime version other than `v1.0.0-beta.1`.
+
+Beta 1 is intended for classrooms, learning, prototypes, and evaluation. Its
+interfaces may still change before final v1. Linux and Windows have been
+maintainer-tested; macOS is provisional while native maintainer testing is
+pending. Useful Mac compatibility reports are welcome on canonical Gitea.
 
 Open [http://127.0.0.1:8080/?name=Hime-san](http://127.0.0.1:8080/?name=Hime-san),
 refresh it, and watch the request number and UTC time change. Then try:
@@ -74,6 +83,7 @@ internal/views/views.go       typed template contracts
 internal/views/*.sando        templates people edit
 internal/views/*.sando.go     committed generated Go
 scripts/verify.sh             generation, tests, build, and dependency gate
+scripts/verify.ps1            the same gate for native Windows PowerShell
 ```
 
 The application owns the server, routing, headers, data, and deployment.
@@ -83,9 +93,9 @@ before accepting real user content.
 
 ## What the verification gate proves
 
-`./scripts/verify.sh` checks committed output, generates twice and compares
-digests, runs all tests and `go vet`, builds the server into a temporary
-directory, and inspects its Go dependency graph. The only production
+`./scripts/verify.sh` and `scripts/verify.ps1` check committed output, generate
+twice and compare digests, run all tests and `go vet`, build the server into a
+temporary directory, and inspect its Go dependency graph. The only production
 Sandwich Hime package allowed by that graph is
 `gamertan.com/sandwich-hime/sando`.
 

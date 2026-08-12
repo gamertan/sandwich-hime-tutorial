@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: 0BSD
 
-# The current preview runtime is connected through a local workspace only.
+# Local workspaces must not override the published tutorial dependencies.
 go.work
 go.work.sum
 

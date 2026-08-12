@@ -3,8 +3,8 @@
 # Generated code
 
 Every `*.sando.go` file is an owned output of the neighboring `*.sando` source.
-Commit both files so production builds need only ordinary Go and the small
-`sando` runtime.
+The exact generator is `himesan v1.0.0-beta.1`. Commit both files so production
+builds need only ordinary Go and the small `sando` runtime.
 
 Never hand-edit a generated neighbor. Run `himesan generate internal/views`,
 review the deterministic diff, and use `himesan check internal/views` in local
