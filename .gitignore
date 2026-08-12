@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: 0BSD
+
+# The current preview runtime is connected through a local workspace only.
+go.work
+go.work.sum
+
+# Local build output.
+/site
+/sandwich-hime-tutorial

@@ -1,0 +1,4 @@
+# SPDX-License-Identifier: 0BSD
+
+* text=auto eol=lf
+*.sando.go linguist-generated=true

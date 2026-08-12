@@ -1,0 +1,53 @@
+<?sando go
+package views
+
+func Layout(view LayoutView)
+?>
+<?# SPDX-License-Identifier: 0BSD ?>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A tiny dynamic Go website built with Sandwich Hime.">
+  <title><?= view.Title ?></title>
+  <style>
+    :root { color-scheme: light dark; font-family: ui-rounded, system-ui, sans-serif; line-height: 1.6; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f6f1e7; color: #28231d; }
+    a { color: #74449a; text-underline-offset: .2em; }
+    a:focus-visible { outline: .2rem solid #c85278; outline-offset: .2rem; }
+    .skip { position: absolute; left: .75rem; top: -5rem; padding: .6rem .8rem; background: #fff; color: #28231d; z-index: 2; }
+    .skip:focus { top: .75rem; }
+    .page, footer { width: min(68rem, calc(100% - 2rem)); margin-inline: auto; }
+    .page { padding-block: clamp(3rem, 9vw, 7rem); }
+    .eyebrow { margin: 0 0 1rem; }
+    .badge { display: inline-block; padding: .25rem .65rem; border: 1px solid currentColor; border-radius: 999px; font-size: .84rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+    h1 { max-width: 16ch; margin: 0; font-size: clamp(2.5rem, 9vw, 5.8rem); line-height: .98; overflow-wrap: anywhere; }
+    h2 { margin-top: 3.5rem; font-size: clamp(1.6rem, 4vw, 2.4rem); }
+    h3 { margin-top: 0; }
+    .lede { max-width: 46rem; font-size: clamp(1.1rem, 2vw, 1.35rem); }
+    .trail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: 1rem; }
+    .trail, .note { padding: 1.1rem; border: 1px solid #cdbfae; border-radius: .8rem; background: #fffaf1; }
+    .trail p { margin-bottom: 0; }
+    .note { max-width: 52rem; margin-top: 2rem; }
+    footer { padding-block: 1.5rem 2.5rem; border-top: 1px solid #cdbfae; font-size: .9rem; }
+    footer p { margin: .25rem 0; }
+    code { overflow-wrap: anywhere; }
+    @media (prefers-color-scheme: dark) {
+      body { background: #1d1a20; color: #f5eee5; }
+      a { color: #d9a5ff; }
+      .trail, .note { border-color: #5b505f; background: #29242d; }
+      footer { border-color: #5b505f; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <?~ view.Body ?>
+  <footer>
+    <p>Rendered at <time datetime="<?= view.RenderedAtUTC ?>"><?= view.RenderedAtUTC ?></time> as request <strong>#<?= view.RequestNumber ?></strong> since this process started.</p>
+    <p>This HTML response is not cached. Refresh it and the server builds fresh typed data.</p>
+  </footer>
+</body>
+</html>

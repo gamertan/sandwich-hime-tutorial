@@ -1,0 +1,27 @@
+<?sando go
+package views
+
+func Home(view HomeView)
+?>
+<?# SPDX-License-Identifier: 0BSD ?>
+<main id="main" class="page">
+  <p class="eyebrow"><?~ Badge("rendered on this request") ?></p>
+  <h1>Hello, <?= view.Visitor ?>.</h1>
+  <p class="lede">This page began as readable HTML, became typed Go, and received its data from an ordinary server handler just now.</p>
+
+  <section aria-labelledby="trail-heading">
+    <h2 id="trail-heading">Choose a trail</h2>
+    <div class="trail-grid">
+      <? for _, trail := range view.Trails { ?>
+        <article class="trail">
+          <h3><a href="<?= trail.URL ?>"><?= trail.Label ?></a></h3>
+          <p><?= trail.Description ?></p>
+        </article>
+      <? } ?>
+    </div>
+  </section>
+
+  <aside class="note" aria-label="Template boundary">
+    <strong>Two moments, one calm path:</strong> Hime-san generated the component code when the template changed. The compiled application rendered this response with your request data now.
+  </aside>
+</main>
