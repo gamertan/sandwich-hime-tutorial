@@ -25,7 +25,7 @@ The starter demonstrates the boundary plainly:
   time through `Server-Timing`.
 - Production imports the Apache-2.0 `sando` runtime, not the compiler.
 
-## Walk the path with Beta 1
+## Walk the path with the Beta 1 runtime and Beta 2 compiler
 
 Install Go 1.25 or newer, then resolve the tiny runtime before installing the
 immutable classroom compiler:
@@ -34,7 +34,7 @@ immutable classroom compiler:
 git clone https://gitea.speelman.ca/gamertan/sandwich-hime-tutorial.git
 cd sandwich-hime-tutorial
 GOWORK=off go mod download gamertan.com/sandwich-hime/sando@v1.0.0-beta.1
-go install gamertan.com/sandwich-hime/cmd/himesan@v1.0.0-beta.1
+go install gamertan.com/sandwich-hime/cmd/himesan@v1.0.0-beta.2
 ./scripts/verify.sh
 GOWORK=off go run ./cmd/site
 ```
@@ -46,7 +46,7 @@ git clone https://gitea.speelman.ca/gamertan/sandwich-hime-tutorial.git
 Set-Location sandwich-hime-tutorial
 $env:GOWORK = "off"
 go mod download gamertan.com/sandwich-hime/sando@v1.0.0-beta.1
-go install gamertan.com/sandwich-hime/cmd/himesan@v1.0.0-beta.1
+go install gamertan.com/sandwich-hime/cmd/himesan@v1.0.0-beta.2
 .\scripts\verify.ps1
 go run ./cmd/site
 ```
@@ -55,8 +55,8 @@ Make sure Go's install directory—normally `$(go env GOPATH)/bin`—is on
 `PATH`, or set `HIMESAN_BIN` to the full compiler path before running either
 verifier. The starter deliberately runs with `GOWORK=off`: it proves the
 application resolves the published Apache-2.0 runtime rather than a neighboring
-development checkout. The verification scripts also reject any compiler or
-runtime version other than `v1.0.0-beta.1`.
+development checkout. The verification scripts require compiler
+`v1.0.0-beta.2` and runtime `v1.0.0-beta.1` exactly.
 
 If an earlier compiler-first attempt reports that the parent module does not
 contain `gamertan.com/sandwich-hime/sando`, repair only that module selection:
@@ -69,7 +69,8 @@ GOWORK=off go get gamertan.com/sandwich-hime/sando@v1.0.0-beta.1
 Then run the verifier again. You do not need to clear your whole Go module
 cache.
 
-Beta 1 is intended for classrooms, learning, prototypes, and evaluation. Its
+The Beta 2 compiler and Beta 1 runtime are intended for classrooms, learning,
+prototypes, and evaluation. Their
 interfaces may still change before final v1. Linux and Windows have been
 maintainer-tested; macOS is provisional while native maintainer testing is
 pending. Useful Mac compatibility reports are welcome on canonical Gitea.

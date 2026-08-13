@@ -11,9 +11,10 @@ Set-Location $repoRoot
 $env:GOWORK = "off"
 
 $himesan = if ($env:HIMESAN_BIN) { $env:HIMESAN_BIN } else { "himesan" }
-$expectedVersion = "v1.0.0-beta.1"
+$expectedCompilerVersion = "v1.0.0-beta.2"
+$expectedRuntimeVersion = "v1.0.0-beta.1"
 if (-not (Get-Command $himesan -ErrorAction SilentlyContinue)) {
-    throw "himesan was not found; install v1.0.0-beta.1 or set HIMESAN_BIN"
+    throw "himesan was not found; install v1.0.0-beta.2 or set HIMESAN_BIN"
 }
 
 function Assert-LastExitCode([string]$Step) {
@@ -32,19 +33,20 @@ function Get-GeneratedDigest {
     return ($lines -join "`n")
 }
 
-$versionLine = (& $himesan version | Select-Object -First 1)
+$versionOutput = & $himesan version
 Assert-LastExitCode "himesan version"
+$versionLine = ($versionOutput | Select-Object -First 1)
 if ($versionLine -notmatch '^himesan ([^ ]+) ') {
     throw "could not parse himesan version output: $versionLine"
 }
-if ($Matches[1] -ne $expectedVersion) {
-    throw "himesan version is $($Matches[1]); expected $expectedVersion"
+if ($Matches[1] -ne $expectedCompilerVersion) {
+    throw "himesan version is $($Matches[1]); expected $expectedCompilerVersion"
 }
 
 $runtimeVersion = (go list -m -f '{{.Version}}' gamertan.com/sandwich-hime/sando | Select-Object -First 1)
 Assert-LastExitCode "sando runtime version"
-if ($runtimeVersion -ne $expectedVersion) {
-    throw "sando runtime version is $runtimeVersion; expected $expectedVersion"
+if ($runtimeVersion -ne $expectedRuntimeVersion) {
+    throw "sando runtime version is $runtimeVersion; expected $expectedRuntimeVersion"
 }
 
 & $himesan check internal/views
@@ -86,4 +88,4 @@ if ($dependencies | Where-Object { $_ -match '^gamertan\.com/sandwich-hime$|^gam
     throw "production dependency graph contains the Sandwich Hime compiler"
 }
 
-Write-Output "verified Beta 1 identity, deterministic generation, tests, vet, build, and runtime-only production dependencies"
+Write-Output "verified Beta 2 compiler, Beta 1 runtime, deterministic generation, tests, vet, build, and runtime-only production dependencies"
